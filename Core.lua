@@ -935,11 +935,12 @@ function AngryAssign:UpdateSelected(destructive)
 		end
 		self.window.text.button:Disable()
 	end
+
 	if page and permission then
 		self.window.button_rename:SetDisabled(false)
 		self.window.button_revert:SetDisabled(not self.window.text.button:IsEnabled())
-		self.window.button_display:SetDisabled(self.window.text.button:IsEnabled())
-		self.window.button_output:SetDisabled(self.window.text.button:IsEnabled())
+		self.window.button_display:SetDisabled(not self.window.text.button:IsEnabled())
+		self.window.button_output:SetDisabled(not self.window.text.button:IsEnabled())
 		self.window.button_restore:SetDisabled(not self.window.text.button:IsEnabled() and page.Backup == page.Contents)
 		self.window.text:SetDisabled(false)
 	else
@@ -1099,7 +1100,7 @@ end
 
 function AngryAssign:IsPlayerRaidLeader()
 	local leader = self:GetRaidLeader()
-	return leader and PlayerFullName() == EnsureUnitFullName(leader)
+	return (leader and PlayerFullName() == EnsureUnitFullName(leader)) or UnitIsGroupLeader(PlayerFullName())
 end
 
 function AngryAssign:IsGuildRaid()
@@ -1139,7 +1140,7 @@ end
 
 function AngryAssign:PermissionCheck(sender)
 	if not sender then sender = PlayerFullName() end
-
+	
 	if (IsInRaid() or IsInGroup()) then
 		return (UnitIsGroupLeader(EnsureUnitShortName(sender)) == true or UnitIsGroupAssistant(EnsureUnitShortName(sender)) == true) and self:IsValidRaid()
 	else

@@ -1,4 +1,4 @@
-## Interface: 40300
+## Interface: 30300
 ## Title: Angry Assignments
 ## Author: Ermad
 ## Version: v1.6.1
